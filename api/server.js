@@ -9,6 +9,9 @@ var express = require('express'),
     UserModels = require('./models/userModels'), //created model loading here 
     ApiModels = require('./models/apiModels'), //created model loading here 
     CommonModels = require('./models/commonModels'), //created model loading here 
+    PostModels = require('./models/postModels'), //created model loading here 
+    CommentModels = require('./models/commentModels'), //created model loading here 
+    TagModels = require('./models/tagModels'), //created model loading here 
     bodyParser = require('body-parser');
 
 
@@ -37,7 +40,7 @@ mongoose.connect(config.connection_string, { useNewUrlParser: true }); //main lo
 app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: true }));
 app.use(cors({
-    origin: ['http://localhost:4200'],
+    origin: ['http://localhost:4200', 'http://localhost:5173'],
     credentials: true
 }));
 

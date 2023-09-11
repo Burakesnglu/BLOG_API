@@ -54,7 +54,10 @@ var UserSchema = new Schema({
     required: true,
     auto: true,
   },
-  name: {
+  firstName: {
+    type: String
+  },
+  lastName: {
     type: String
   },
   username: {

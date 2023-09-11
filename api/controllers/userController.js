@@ -28,7 +28,7 @@ exports.login = function (req, res) {
 
         var request = {
             password: parameters.password,
-            username: parameters.username
+            email: parameters.email
         };
 
         var response = new RequestResult({
@@ -37,7 +37,7 @@ exports.login = function (req, res) {
             message: null
         });
 
-        User.findOne({ username: { $regex: new RegExp("^" + request.username + "$", "i") } }, async function (err, user) {
+        User.findOne({ email: { $regex: new RegExp("^" + request.email + "$", "i") } }, async function (err, user) {
             try {
                 if (err) {
                     res.status(500).send(err);
@@ -51,7 +51,7 @@ exports.login = function (req, res) {
                     var password = Utilities.decrypt(user.password);
                     console.log("pass: " + password);
 
-                    // var s = user.username + "@@" + password;
+                    // var s = user.email + "@@" + password;
                     //console.log(s);
                     // var signature = md5(s);
                     //var signature = md5("test@ast.com" + "@@" + "test");
@@ -167,7 +167,7 @@ exports.getUsers = async function (req, res) {
         if (parameters.multiSortMeta) {
             query.push({ "$sort": Utilities.getPrimeNGSort(parameters.multiSortMeta) });
         } else {
-            query.push({ "$sort": { "name": 1 } });
+            query.push({ "$sort": { "firstName": 1 } });
         }
 
         if (Object.keys(match).length > 0) {
@@ -201,7 +201,7 @@ exports.getUsers = async function (req, res) {
     }
 };
 
-exports.saveUser = async function (req, res) {
+exports.register = async function (req, res) {
     try {
 
 
@@ -212,7 +212,7 @@ exports.saveUser = async function (req, res) {
         var newUser = Object.assign(new User(), req.body);
         var user = req.user;
 
-        if (!newUser.name || !newUser.username) {
+        if (!newUser.firstName || !newUser.email) {
 
             result.code = -1;
             result.message = "insufficient data";

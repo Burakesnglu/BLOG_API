@@ -10,6 +10,6 @@ module.exports = function (app) {
 
     //Users
     app.route('/v1/getUsers').post(userController.getUsers);
-    app.route('/v1/saveUser').post(userController.saveUser);
+    app.route('/auth/register').post(userController.register);
 
 };
