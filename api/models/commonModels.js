@@ -165,6 +165,42 @@ var TownSchema = new Schema({
   }
 }, { collection: 'Town' });
 
+
+var UpdateLogSchema = new Schema({
+  _id: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    auto: true,
+  },
+  action: {
+    type: mongoose.Schema.Types.String
+  },
+  description: {
+    type: mongoose.Schema.Types.String
+  },
+  type: {
+    type: mongoose.Schema.Types.String
+  },
+  objectId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true
+  },
+  referenceId: {
+    type: mongoose.Schema.Types.ObjectId
+  },
+  updatedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true
+  },
+  object: {
+    type: mongoose.Schema.Types.Mixed,
+    required: true
+  },
+  updateDate: {
+    type: mongoose.Schema.Types.Date
+  }
+}, { collection: 'UpdateLog' });
+
 module.exports = mongoose.model('City', CitySchema);
 module.exports = mongoose.model('Country', CountrySchema);
 module.exports = mongoose.model('FileInfo', FileInfoSchema);
@@ -172,3 +208,4 @@ module.exports = mongoose.model('FileInfoMetaData', FileInfoMetaDataSchema);
 module.exports = mongoose.model('FileType', FileTypeSchema);
 module.exports = mongoose.model('Parameter', ParameterSchema);
 module.exports = mongoose.model('Town', TownSchema);
+module.exports = mongoose.model('UpdateLog', UpdateLogSchema);

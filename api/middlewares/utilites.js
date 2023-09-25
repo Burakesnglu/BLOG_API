@@ -2,10 +2,13 @@
 const Cryptr = require('cryptr');
 const cryptr = new Cryptr('@tadruXl-eyLPi3*3uP-');
 const baseCredit = 10;
+const enums = require("../models/enums");
 
 //Mongoose
 var mongoose = require('mongoose'),
-    User = mongoose.model('User');
+    User = mongoose.model('User'),
+    RequestResult = mongoose.model('RequestResult'),
+    UpdateLog = mongoose.model('UpdateLog')
 
 var nodemailer = require('nodemailer');
 var crypto = require('crypto');
@@ -37,7 +40,74 @@ const sendMail = function (mailOptions, callback) {
     });
 }
 
+function saveObject(type, object, mandatoryFields, user, res) {
 
+    try {
+        var result = new RequestResult({
+            code: -1
+        });
+
+        //Assign _id 
+        if (!object._id) {
+            object._id = new ObjectId();
+        }
+
+        //Check Mandatory Fields
+        var pass = true;
+        var missingFields = [];
+        mandatoryFields.forEach(field => {
+            if (!object[field]) {
+                //console.log("field " + field + " is missing")
+                missingFields.push(field);
+                pass = false;
+            }
+        });
+
+        if (!pass) {
+
+            result.code = -1;
+            result.data = missingFields;
+            result.message = "Insufficient data. Check mandatory fields.";
+            res.status(200).send(result);
+
+            return;
+        }
+
+        type.findByIdAndUpdate(object._id, object, { upsert: true, new: true, setDefaultsOnInsert: true }, async function (err, savedObject) {
+            if (err) {
+                console.log(err);
+                result.code = -99;
+                result.message = err.message;
+                res.status(200).send(result);
+            } else {
+
+                var updateLog = Object.assign(new UpdateLog(), {
+                    type: type.collection.name,
+                    action: enums.UpdateLogAction.SAVE,
+                    objectId: object._id,
+                    updatedBy: user._id,
+                    object: object,
+                    updateDate: new Date()
+                });
+
+                updateLog.save(function (err, log) {
+                    if (err) {
+                        console.log("Error saving update log: " + err);
+                    }
+
+                    result.code = 1;
+                    result.data = savedObject;
+                    res.status(200).send(result);
+                });
+            }
+        });
+
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error.stack);
+    }
+}
 
 
 /**
@@ -159,3 +229,4 @@ exports.clearPrimeNGFilters = clearPrimeNGFilters;
 exports.getPrimeNGSort = getPrimeNGSort;
 exports.getNewPackageNoAsync = getNewPackageNoAsync;
 exports.buildMatch = buildMatch;
+exports.saveObject = saveObject;

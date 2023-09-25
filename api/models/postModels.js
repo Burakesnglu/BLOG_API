@@ -14,6 +14,9 @@ var PostSchema = new Schema({
     tagId: {
         type: String
     },
+    editorsPick: {
+        type: Boolean
+    },
     title: {
         type: String
     },

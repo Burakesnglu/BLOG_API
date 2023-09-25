@@ -56,6 +56,8 @@ app.set("api_secret_key", config.api_secret_key);
 
 var userRoutes = require('./routes/userRoutes'); //importing route
 userRoutes(app); //register the route 
+var postRoutes = require('./routes/postRoutes'); //importing route
+postRoutes(app); //register the route 
 var publicRoutes = require('./routes/publicRoutes'); //importing route
 publicRoutes(app); //register the route 
 var apiRoutes = require('./routes/apiRoutes'); //importing route
@@ -78,7 +80,7 @@ const options = {
 };
 */
 //http.createServer(app).listen(3005, 'localhost');
-//https.createServer(options, app).listen(3006, 'aktarmamerkezi.com');
+//https.createServer(options, app).listen(3006, 'serverName');
 
 //app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());

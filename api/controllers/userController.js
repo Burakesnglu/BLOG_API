@@ -18,6 +18,7 @@ var ObjectId = require('mongodb').ObjectId;
 var md5 = require('md5');
 const jwt = require("jsonwebtoken");
 const config = require('../config/config');
+const enums = require('../models/enums');
 
 
 exports.login = function (req, res) {
@@ -227,6 +228,10 @@ exports.register = async function (req, res) {
 
         if (newUser.password) {
             newUser.password = Utilities.encrypt(newUser.password);
+        }
+
+        if (!newUser.role) {
+            newUser.role = enums.ROLES.USER
         }
 
         var query = { _id: newUser._id },

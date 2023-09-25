@@ -5,6 +5,11 @@ const ParameterType = Object.freeze({
   TICKET_NO: 'TICKET_NO'
 });
 
+const UpdateLogAction = Object.freeze({
+  SAVE: 'SAVE',
+  DELETE: 'DELETE'
+});
+
 module.exports = {
   HTTP_CODES: {
     OK: 200,
@@ -34,5 +39,10 @@ module.exports = {
     "VERBOSE": "VERBOSE",
     "HTTP": "HTTP"
   },
-  ParameterType
+  ROLES: {
+    USER: 'USER',
+    ADMIN: 'ADMIN'
+  },
+  ParameterType,
+  UpdateLogAction
 };

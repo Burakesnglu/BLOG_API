@@ -72,9 +72,8 @@ var UserSchema = new Schema({
   avatar :{
     type: String
   },
-  roles: {
-    type: [RoleSchema],
-    default : [] 
+  role: {
+    type: String
   },
   active: {
     type: Boolean,
